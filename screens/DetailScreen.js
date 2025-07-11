@@ -18,10 +18,10 @@ export default function DetailScreen({ route, navigation }) {
   const { item } = route.params;
 
   const deleteItem = async () => {
-    Alert.alert("Confirmer", "Supprimer cet article ?", [
-      { text: "Annuler" },
+    Alert.alert("Confirm", "Delete this item?", [
+      { text: "Cancel" },
       {
-        text: "Supprimer",
+        text: "Delete",
         style: "destructive",
         onPress: async () => {
           const list = await loadWishlist();
@@ -40,105 +40,96 @@ export default function DetailScreen({ route, navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#A8D5FF" />
-      
-      {/* Background Gradient */}
-      <LinearGradient
-        colors={['#A8D5FF', '#E8F4FD', '#FFFFFF']}
-        locations={[0, 0.4, 1]}
-        style={styles.backgroundGradient}
-      />
+     <View style={styles.container}>
+         <StatusBar barStyle="dark-content" backgroundColor="#A8D5FF" />
+         
+         {/* Background Gradient */}
+         <LinearGradient
+           colors={['#A8D5FF', '#E8F4FD', '#FFFFFF']}
+           locations={[0, 0.4, 1]}
+           style={styles.backgroundGradient}
+         />
       
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity 
-          style={styles.headerButton}
           onPress={() => navigation.goBack()}
         >
-          <Ionicons name="chevron-back" size={24} color="#FF8C42" />
+    <Ionicons name="chevron-back" size={24} color="#FF8C42" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Détails</Text>
-     
+          <Text style={styles.headerTitle}> Item Details</Text>
+        
+        <TouchableOpacity >
+          <Ionicons name="heart-outline" size={24} color="#FF8C42" />
+        </TouchableOpacity>
       </View>
 
       <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
-        {/* Image Container */}
+        {/* Image Container - Centré comme dans l'image */}
         <View style={styles.imageContainer}>
-          <View style={styles.imageCard}>
-            <LinearGradient
-              colors={['#4A90E2', '#357ABD']}
-              style={styles.imageGradient}
-            >
-              {item.image ? (
-                <Image source={{ uri: item.image }} style={styles.itemImage} />
-              ) : (
-                <View style={styles.placeholderImage}>
-                  <Ionicons name="image-outline" size={48} color="#E8F4FD" />
-                </View>
-              )}
-              <TouchableOpacity style={styles.heartIcon}>
-                <Ionicons name="heart" size={20} color="#FF8C42" />
-              </TouchableOpacity>
-            </LinearGradient>
-          </View>
+          {item.image ? (
+            <Image source={{ uri: item.image }} style={styles.itemImage} />
+          ) : (
+            <View style={styles.placeholderImage}>
+              <Ionicons name="image-outline" size={60} color="#ccc" />
+            </View>
+          )}
         </View>
 
-        {/* Item Details */}
-        <View style={styles.detailsContainer}>
-          <View style={styles.titleSection}>
-            <View style={styles.titleLeft}>
-              <Text style={styles.title}>{item.name}</Text>
-              <Text style={styles.subtitle}>créé par Vous</Text>
-            </View>
-            <View style={styles.priceSection}>
-              <Text style={styles.price}>{item.price} MAD</Text>
-            </View>
-          </View>
+        {/* Product Details Card - Design blanc et clean */}
+        <View style={styles.detailsCard}>
+          {/* Title */}
+          <Text style={styles.title}>{item.name}</Text>
+          
+          {/* Price with Buy button */}
+       <View style={styles.priceRow}>
+  <Text style={styles.price}>Price: ${item.price}</Text>
+  <TouchableOpacity 
+    style={styles.buyCircleButton}
+    onPress={() => {
+      Alert.alert("Buy Now", "Redirect to purchase page?", [
+        { text: "Cancel" },
+        { text: "Go", onPress: openUrl }
+      ]);
+    }}
+  >
+    <Ionicons name="bag-outline" size={20} color="#3B82F6" />
 
+  </TouchableOpacity>
+</View>
+
+          {/* Description */}
           <Text style={styles.description}>
-            {item.desc}
+            {item.desc || "Premium imported product\n100% authentic quality\nShipped to your door with best care\nShipping worldwide"}
           </Text>
 
-          {/* Action Buttons */}
-          <View style={styles.actionButtons}>
-            {item.url && (
-              <TouchableOpacity 
-                style={styles.primaryButton}
-                onPress={openUrl}
-              >
-                <LinearGradient
-                  colors={['#FF8C42', '#FF6B1A']}
-                  style={styles.primaryButtonGradient}
-                >
-                  <Ionicons name="link" size={20} color="#FFFFFF" />
-                  <Text style={styles.primaryButtonText}>Voir le produit</Text>
-                </LinearGradient>
-              </TouchableOpacity>
-            )}
-            
-            <View style={styles.secondaryButtons}>
-              <TouchableOpacity 
-                style={[styles.secondaryButton, styles.editButton]}
-                onPress={() => navigation.navigate('Modifier', { item })}
-              >
-                <Ionicons name="create-outline" size={20} color="#4A90E2" />
-                <Text style={styles.editButtonText}>Modifier</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity 
-                style={[styles.secondaryButton, styles.deleteButton]}
-                onPress={deleteItem}
-              >
-                <Ionicons name="trash-outline" size={20} color="#FF8C42" />
-                <Text style={styles.deleteButtonText}>Supprimer</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
+          
+          {/* Action Buttons - Edit + Delete alignés côte à côte */}
+<View style={styles.bottomButtons}>
+  {/* Edit Button (pink icon only) */}
+  <TouchableOpacity
+    style={styles.editButton}
+    onPress={() => navigation.navigate('Modifier', { item })}
+  >
+    <Ionicons name="create-outline" size={20} color="#FFFFFF" />
+  </TouchableOpacity>
 
-        {/* Additional Info */}
-      
+  {/* Delete Button (green with icon + text) */}
+  <TouchableOpacity
+    style={styles.deleteButton}
+    onPress={deleteItem}
+  >
+    <Ionicons name="trash-outline" size={18} color="#FFFFFF" />
+    <Text style={styles.deleteButtonText}>Delete</Text>
+  </TouchableOpacity>
+</View>
+
+
+
+
+
+        
+        </View>
       </ScrollView>
     </View>
   );
@@ -163,205 +154,192 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 55,
     paddingBottom: 20,
-    backgroundColor: 'transparent',
   },
- 
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#1A4B7A',
-    flex: 1,
-    textAlign: 'Left',
-  },
-  scrollContainer: {
-    flex: 1,
-  },
-  imageContainer: {
-    paddingHorizontal: 20,
-    paddingBottom: 20,
-  },
-  imageCard: {
-    borderRadius: 20,
-    overflow: 'hidden',
-    shadowColor: '#4A90E2',
-    shadowOpacity: 0.3,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 8,
-    elevation: 5,
-  },
-  imageGradient: {
-    padding: 30,
-    position: 'relative',
-    minHeight: 280,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  itemImage: {
-    width: 220,
-    height: 220,
-    borderRadius: 16,
-    resizeMode: 'cover',
-  },
-  placeholderImage: {
-    width: 220,
-    height: 220,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  heartIcon: {
-    position: 'absolute',
-    top: 20,
-    right: 20,
+  headerButton: {
     width: 40,
     height: 40,
     borderRadius: 20,
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#FF8C42',
-    shadowOpacity: 0.3,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  detailsContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
-    marginHorizontal: 20,
-    borderRadius: 20,
-    padding: 24,
-    marginBottom: 20,
-    shadowColor: '#4A90E2',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 5,
-    borderWidth: 1,
-    borderColor: 'rgba(74, 144, 226, 0.1)',
-  },
-  titleSection: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 16,
-  },
-  titleLeft: {
-    flex: 1,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#2B5A87',
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#6B8CAE',
-    marginBottom: 12,
-  },
-  priceSection: {
-    alignItems: 'flex-end',
-  },
-  price: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#FF8C42',
-  },
-  description: {
-    fontSize: 16,
-    color: '#2B5A87',
-    lineHeight: 24,
-    marginBottom: 24,
-  },
-  actionButtons: {
-    gap: 12,
-  },
-  primaryButton: {
-    borderRadius: 16,
-    overflow: 'hidden',
-    shadowColor: '#FF8C42',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 5,
-  },
-  primaryButtonGradient: {
-    flexDirection: 'row',
-    paddingVertical: 16,
-    paddingHorizontal: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-  },
-  primaryButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  secondaryButtons: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  secondaryButton: {
-    flex: 1,
-    flexDirection: 'row',
-    paddingVertical: 16,
-    paddingHorizontal: 20,
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    borderWidth: 1,
-    shadowColor: '#4A90E2',
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 2,
   },
-  editButton: {
-    backgroundColor: 'rgba(74, 144, 226, 0.1)',
-    borderColor: 'rgba(74, 144, 226, 0.2)',
-  },
-  editButtonText: {
-    color: '#4A90E2',
-    fontSize: 16,
+    headerTitle: {
+    fontSize: 20,
     fontWeight: '600',
+
+    color: '#1A4B7A',
+    
+    textAlign: 'left',
+    flex: 100,
+    marginLeft:10,
   },
-  deleteButton: {
-    backgroundColor: 'rgba(220, 38, 38, 0.1)',
-    borderColor: 'rgba(231, 96, 13, 0.2)',
-  },
-  deleteButtonText: {
-    color: '#FF8C42',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  additionalInfo: {
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    marginHorizontal: 20,
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 32,
-    borderWidth: 1,
-    borderColor: 'rgba(74, 144, 226, 0.1)',
-  },
-  infoRow: {
-    flexDirection: 'row',
+  heartButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
-  dots: {
-    flexDirection: 'row',
-    gap: 4,
-    marginRight: 12,
+  scrollContainer: {
+    flex: 1,
   },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+  imageContainer: {
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingBottom: 30,
   },
-  infoText: {
+  itemImage: {
+    width: 350,
+    height: 260,
+    borderRadius: 15,
+    resizeMode: 'cover',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  placeholderImage: {
+    width: 250,
+    height: 250,
+    backgroundColor: '#F5F5F5',
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#E0E0E0',
+    borderStyle: 'dashed',
+  },
+  detailsCard: {
+    backgroundColor: '#FFFFFF',
+    marginHorizontal: 20,
+    borderRadius: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 25,
+    marginTop: 30,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.1,
+    shadowRadius: 15,
+    elevation: 6,
+
+ 
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#666',
+
+    marginBottom: 8,
+    textAlign: 'left',
+  },
+  price: {
+    fontSize: 18,
+    fontWeight: '600',
+  color: '#4A90E2',
+    marginBottom: 15,
+  },
+  priceRow: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginBottom: 15,
+},
+
+buyCircleButton: {
+  width: 45,
+  height: 45,
+  borderRadius: 22.5,
+  backgroundColor: '#FFFFFF',
+  justifyContent: 'center',
+  alignItems: 'center',
+  shadowColor: '#3B82F6',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.3,
+    borderWidth: 0.5,
+  borderColor: '#3B82F6',
+  shadowRadius: 4,
+  
+  elevation: 3,
+},
+  description: {
     fontSize: 14,
-    color: '#6B8CAE',
+    color: '#666',
+    
+    lineHeight: 20,
+    marginBottom: 20,
+    textAlign: 'left',
   },
+  urlContainer: {
+    backgroundColor: '#F8F9FA',
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 8,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: '#E9ECEF',
+  },
+  urlText: {
+    fontSize: 12,
+    color: '#007BFF',
+    textDecorationLine: 'underline',
+  },
+ 
+bottomButtons: {
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: 12,
+  marginTop: 20,
+},
+
+editButton: {
+  width: 90,
+  height: 50,
+  borderRadius: 12,
+  backgroundColor: '#FB923C',
+
+  justifyContent: 'center',
+  alignItems: 'center',
+  shadowColor: '#FF6B6B',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.2,
+  shadowRadius: 4,
+  elevation: 4,
+},
+
+deleteButton: {
+   width: 250,
+  height: 50,
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: '#3B82F6',
+  paddingHorizontal: 20,
+  paddingVertical: 12,
+  borderRadius: 16,
+  gap: 8,
+  shadowColor: '#34D399',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.25,
+  shadowRadius: 6,
+  elevation: 4,
+},
+
+deleteButtonText: {
+  color: '#FFFFFF',
+  fontSize: 16,
+  fontWeight: '600',
+},
+
 });

@@ -4,7 +4,7 @@ export const CATEGORIES = [
     id: 1, 
     name: 'Works', 
     icon: 'briefcase', 
-    color: '#FF6B9D',
+    color: '#FF8C42',
     description: 'Matériel de travail et bureau'
   },
   { 

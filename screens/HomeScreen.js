@@ -212,6 +212,8 @@ const styles = StyleSheet.create({
     color: '#1A4B7A',
     textAlign: 'left',
     flex: 1,
+    marginLeft:10,
+
   },
 
   // Nouveaux styles pour la section hero
@@ -301,7 +303,7 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
   },
   featureImage: {
-    width: 80,
+    width: 100,
     height: 80,
 
   },

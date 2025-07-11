@@ -3,6 +3,8 @@ import React from 'react';
 import {
   View,
   Text,
+    Image,
+
   StyleSheet,
   ScrollView,
   TouchableOpacity,
@@ -13,7 +15,8 @@ import { Ionicons } from '@expo/vector-icons';
 
 const CategoryScreen = ({ navigation }) => {
   const categories = [
-    { id: 1, name: 'Works', icon: 'briefcase', color: '#FF6B9D' },
+    { id: 1, name: 'Shopping', icon: 'briefcase', color: '#FF8C42' },
+
     { id: 2, name: 'Travel', icon: 'airplane', color: '#4ECDC4' },
     { id: 3, name: 'Studying', icon: 'book', color: '#45B7D1' },
   ];
@@ -28,12 +31,11 @@ const CategoryScreen = ({ navigation }) => {
       <StatusBar barStyle="dark-content" backgroundColor="#A8D5FF" />
       
       {/* Background Gradient - Same as HomeScreen */}
-      <LinearGradient
-        colors={['#A8D5FF', '#E8F4FD', '#FFFFFF']}
-        locations={[0, 0.4, 1]}
-        style={styles.backgroundGradient}
-      />
-      
+     <LinearGradient
+            colors={['#A8D5FF', '#E8F4FD', '#FFFFFF']}
+            locations={[0, 0.4, 1]}
+            style={styles.backgroundGradient}
+          />
       {/* Header - Same as HomeScreen */}
       <View style={styles.header}>
         <TouchableOpacity 
@@ -48,12 +50,43 @@ const CategoryScreen = ({ navigation }) => {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Section Header */}
-        <View style={styles.sectionHeader}>
-          <View>
-            <Text style={styles.sectionTitle}>Catégories</Text>
-            <Text style={styles.sectionSubtitle}>Parcourez vos articles par catégorie</Text>
-          </View>
-        </View>
+           <View style={styles.featureCard}>
+  <LinearGradient
+    colors={['#4A90E2', '#357ABD']}
+    style={styles.featureGradient}
+  >
+    <View style={styles.featureContent}>
+      <Text style={styles.featureTitle}>Personalize Your Wishlist</Text>
+      <Text style={styles.featureSubtitle}>
+        Use custom categories to{'\n'}
+        create personalized wishlists{'\n'}
+        for any occasion or loved one.
+      </Text>
+    </View>
+    <View style={styles.featureImageContainer}>
+      <Image
+        source={require('../assets/image1.png')}
+        style={styles.featureImage}
+      />
+    </View>
+  </LinearGradient>
+</View>
+
+{/* Dots Indicator */}
+<View style={styles.dotsContainer}>
+  <View style={[styles.dot, styles.activeDot]} />
+  <View style={styles.dot} />
+  <View style={styles.dot} />
+</View>
+
+{/* Section Title */}
+<View style={styles.sectionHeader}>
+  <View>
+    <Text style={styles.sectionTitle}>Your Categories</Text>
+    <Text style={styles.sectionSubtitle}>Manage gifts, travels, and goals...</Text>
+  </View>
+</View>
+
 
         {/* Categories Grid */}
         <View style={styles.categoriesGrid}>
@@ -102,6 +135,53 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+    featureCard: {
+    marginHorizontal: 20,
+    marginBottom: 20,
+    borderRadius: 20,
+    overflow: 'hidden',
+    shadowColor: '#4A90E2',
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 8,
+    elevation: 5,
+  },
+   featureGradient: {
+    padding: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+   featureContent: {
+    flex: 1,
+  },
+  featureTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    marginBottom: 8,
+  },
+  featureSubtitle: {
+    fontSize: 14,
+    color: '#E8F4FD',
+    lineHeight: 20,
+  },
+   featureImage: {
+    width: 100,
+    height: 80,
+
+  },
+    dotsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 30,
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: 'rgba(74, 144, 226, 0.3)',
+    marginHorizontal: 4,
   },
   headerTitle: {
     fontSize: 20,
